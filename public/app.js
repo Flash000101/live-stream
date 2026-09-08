@@ -18,45 +18,64 @@ const videos = [
   ["https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=700&q=80", "Making an album from scratch", "Mila Rae · 28K views", "24:16"]
 ];
 
-document.querySelector("#liveGrid").innerHTML =
-  liveStreams.map(([image, title, creator, watching]) =>
-    `<article class="stream-card">
-      <div class="stream-image">
-        <img src="${image}" alt="${title}">
-        <span class="small-live">● LIVE</span>
-        <span class="watching">◉ ${watching}</span>
-      </div>
-      <div class="stream-details">
-        <h3>${title}</h3>
-        <p>${creator}</p>
-      </div>
-    </article>`
-  ).join("");
 
-document.querySelector("#shortsRow").innerHTML =
-  shorts.map(([image, title, meta]) =>
-    `<article class="short-card">
-      <img src="${image}" alt="${title}">
-      <div class="short-meta">
-        <strong>${title}</strong>
-        <span>${meta}</span>
-      </div>
-    </article>`
-  ).join("");
+// ==========================================
+// STATIC CONTENT
+// ==========================================
 
-document.querySelector("#videoGrid").innerHTML =
-  videos.map(([image, title, meta, duration]) =>
-    `<article class="video-card">
-      <div class="video-thumb">
+const liveGrid = document.querySelector("#liveGrid");
+
+if (liveGrid) {
+  liveGrid.innerHTML =
+    liveStreams.map(([image, title, creator, watching]) =>
+      `<article class="stream-card">
+        <div class="stream-image">
+          <img src="${image}" alt="${title}">
+          <span class="small-live">● LIVE</span>
+          <span class="watching">◉ ${watching}</span>
+        </div>
+        <div class="stream-details">
+          <h3>${title}</h3>
+          <p>${creator}</p>
+        </div>
+      </article>`
+    ).join("");
+}
+
+
+const shortsRow = document.querySelector("#shortsRow");
+
+if (shortsRow) {
+  shortsRow.innerHTML =
+    shorts.map(([image, title, meta]) =>
+      `<article class="short-card">
         <img src="${image}" alt="${title}">
-        <span class="duration">${duration}</span>
-      </div>
-      <div class="video-details">
-        <h3>${title}</h3>
-        <p>${meta}</p>
-      </div>
-    </article>`
-  ).join("");
+        <div class="short-meta">
+          <strong>${title}</strong>
+          <span>${meta}</span>
+        </div>
+      </article>`
+    ).join("");
+}
+
+
+const videoGrid = document.querySelector("#videoGrid");
+
+if (videoGrid) {
+  videoGrid.innerHTML =
+    videos.map(([image, title, meta, duration]) =>
+      `<article class="video-card">
+        <div class="video-thumb">
+          <img src="${image}" alt="${title}">
+          <span class="duration">${duration}</span>
+        </div>
+        <div class="video-details">
+          <h3>${title}</h3>
+          <p>${meta}</p>
+        </div>
+      </article>`
+    ).join("");
+}
 
 
 // ==========================================
@@ -66,19 +85,28 @@ document.querySelector("#videoGrid").innerHTML =
 const modal = document.querySelector("#uploadModal");
 
 const openModal = () => {
+  if (!modal) return;
+
   modal.classList.add("open");
   modal.setAttribute("aria-hidden", "false");
 };
 
 const closeModal = () => {
+  if (!modal) return;
+
   modal.classList.remove("open");
   modal.setAttribute("aria-hidden", "true");
 };
 
+
 ["#openUpload", "#heroUpload", "#bannerUpload"].forEach((id) => {
   const button = document.querySelector(id);
-  if (button) button.addEventListener("click", openModal);
+
+  if (button) {
+    button.addEventListener("click", openModal);
+  }
 });
+
 
 const closeUpload = document.querySelector("#closeUpload");
 
@@ -86,22 +114,36 @@ if (closeUpload) {
   closeUpload.addEventListener("click", closeModal);
 }
 
+
 if (modal) {
   modal.addEventListener("click", (event) => {
-    if (event.target === modal) closeModal();
+    if (event.target === modal) {
+      closeModal();
+    }
   });
 }
+
 
 const uploadForm = document.querySelector("#uploadForm");
 
 if (uploadForm) {
   uploadForm.addEventListener("submit", (event) => {
+
     event.preventDefault();
 
-    const title = document.querySelector("#videoTitle").value;
+    const titleElement =
+      document.querySelector("#videoTitle");
 
-    document.querySelector("#uploadNote").textContent =
-      `“${title}” is ready in demo mode. Cloud video storage will be connected next.`;
+    const uploadNote =
+      document.querySelector("#uploadNote");
+
+    const title =
+      titleElement?.value || "Video";
+
+    if (uploadNote) {
+      uploadNote.textContent =
+        `“${title}” is ready in demo mode. Cloud video storage will be connected next.`;
+    }
 
     event.currentTarget.reset();
   });
@@ -118,49 +160,83 @@ const chatToggle = document.querySelector("#chatToggle");
 const chatClose = document.querySelector("#chatClose");
 const chatForm = document.querySelector("#chatForm");
 
+
 if (chatToggle) {
   chatToggle.addEventListener("click", () => {
-    panel.classList.toggle("open");
+
+    if (panel) {
+      panel.classList.toggle("open");
+    }
+
   });
 }
+
 
 if (chatClose) {
   chatClose.addEventListener("click", () => {
-    panel.classList.remove("open");
+
+    if (panel) {
+      panel.classList.remove("open");
+    }
+
   });
 }
 
+
 if (chatForm) {
+
   chatForm.addEventListener("submit", (event) => {
+
     event.preventDefault();
 
-    const input = document.querySelector("#chatInput");
-    const message = input.value.trim();
+    const input =
+      document.querySelector("#chatInput");
 
-    if (!message) return;
+    const messages =
+      document.querySelector("#messages");
 
-    const item = document.createElement("p");
+    const message =
+      input?.value.trim();
+
+    if (!message || !messages) {
+      return;
+    }
+
+    const item =
+      document.createElement("p");
 
     item.innerHTML =
       `<b>@you</b> ${message.replace(/[<>&]/g, "")}`;
 
-    document.querySelector("#messages").append(item);
+    messages.append(item);
 
     input.value = "";
 
     item.scrollIntoView({
       behavior: "smooth"
     });
+
   });
+
 }
 
 
 // ==========================================
-// LIVEKIT LIVE STREAMING
+// LIVEKIT
 // ==========================================
 
 let livekitClient = null;
 let livekitRoom = null;
+
+let currentRoomName = null;
+let currentCreatorIdentity = null;
+
+let heartbeatTimer = null;
+
+
+// ==========================================
+// LOAD LIVEKIT
+// ==========================================
 
 async function loadLiveKit() {
 
@@ -176,59 +252,194 @@ async function loadLiveKit() {
 }
 
 
-// ------------------------------------------
-// LIVE MODAL ELEMENTS
-// ------------------------------------------
+// ==========================================
+// LIVE MODAL
+// ==========================================
 
-const goLiveButton = document.querySelector("#goLiveButton");
-const liveModal = document.querySelector("#liveModal");
-const closeLive = document.querySelector("#closeLive");
-const startLive = document.querySelector("#startLive");
-const stopLive = document.querySelector("#stopLive");
-const localVideo = document.querySelector("#localVideo");
-const liveStatus = document.querySelector("#liveStatus");
-const liveTitle = document.querySelector("#liveTitle");
+const goLiveButton =
+  document.querySelector("#goLiveButton");
+
+const liveModal =
+  document.querySelector("#liveModal");
+
+const closeLive =
+  document.querySelector("#closeLive");
+
+const startLive =
+  document.querySelector("#startLive");
+
+const stopLive =
+  document.querySelector("#stopLive");
+
+const localVideo =
+  document.querySelector("#localVideo");
+
+const liveStatus =
+  document.querySelector("#liveStatus");
+
+const liveTitle =
+  document.querySelector("#liveTitle");
 
 
 function openLiveModal() {
 
-  if (!liveModal) return;
+  if (!liveModal) {
+    return;
+  }
 
   liveModal.classList.add("open");
-  liveModal.setAttribute("aria-hidden", "false");
+
+  liveModal.setAttribute(
+    "aria-hidden",
+    "false"
+  );
 
   if (liveStatus) {
-    liveStatus.textContent = "Ready to start";
+    liveStatus.textContent =
+      "Ready to start";
   }
+
 }
 
 
-function closeLiveModal() {
+async function closeLiveModal() {
 
   if (livekitRoom) {
-    stopLiveStream();
+    await stopLiveStream();
   }
 
-  if (!liveModal) return;
+  if (!liveModal) {
+    return;
+  }
 
   liveModal.classList.remove("open");
-  liveModal.setAttribute("aria-hidden", "true");
+
+  liveModal.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
 }
 
 
 if (goLiveButton) {
-  goLiveButton.addEventListener("click", openLiveModal);
+  goLiveButton.addEventListener(
+    "click",
+    openLiveModal
+  );
 }
 
 
 if (closeLive) {
-  closeLive.addEventListener("click", closeLiveModal);
+  closeLive.addEventListener(
+    "click",
+    closeLiveModal
+  );
 }
 
 
-// ------------------------------------------
+// ==========================================
+// ANNOUNCE LIVE
+// ==========================================
+
+async function announceLive() {
+
+  if (!currentRoomName) {
+    return;
+  }
+
+  const title =
+    liveTitle?.value?.trim() ||
+    "Live Stream";
+
+  const creator =
+    localStorage.getItem("livestream_creator") ||
+    "Live Creator";
+
+
+  const response =
+    await fetch("/api/live/announce", {
+
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json"
+      },
+
+      body: JSON.stringify({
+
+        roomName:
+          currentRoomName,
+
+        title:
+          title,
+
+        creator:
+          creator
+
+      })
+
+    });
+
+
+  if (!response.ok) {
+
+    throw new Error(
+      "Could not publish your live stream"
+    );
+
+  }
+
+}
+
+
+// ==========================================
+// HEARTBEAT
+// ==========================================
+
+function startHeartbeat() {
+
+  stopHeartbeat();
+
+  heartbeatTimer =
+    setInterval(async () => {
+
+      try {
+
+        await announceLive();
+
+      } catch (error) {
+
+        console.error(
+          "Live heartbeat error:",
+          error
+        );
+
+      }
+
+    }, 20000);
+
+}
+
+
+function stopHeartbeat() {
+
+  if (heartbeatTimer) {
+
+    clearInterval(
+      heartbeatTimer
+    );
+
+    heartbeatTimer = null;
+
+  }
+
+}
+
+
+// ==========================================
 // START LIVE
-// ------------------------------------------
+// ==========================================
 
 async function startLiveStream() {
 
@@ -244,47 +455,74 @@ async function startLiveStream() {
     }
 
 
-    const LiveKit = await loadLiveKit();
+    const LiveKit =
+      await loadLiveKit();
 
 
-    // Create room name
+    // --------------------------------------
+    // ROOM NAME
+    // --------------------------------------
+
     const cleanTitle =
       liveTitle?.value
         ?.trim()
-        .replace(/[^a-zA-Z0-9-_]/g, "-");
+        .replace(/[^a-zA-Z0-9-_]/g, "-")
+        .slice(0, 50);
 
 
-    const roomName =
+    currentRoomName =
       cleanTitle ||
       `live-${Date.now()}`;
 
 
-    // Unique creator identity
-    const identity =
+    // --------------------------------------
+    // CREATOR IDENTITY
+    // --------------------------------------
+
+    currentCreatorIdentity =
       `creator-${Date.now()}-${Math.random()
         .toString(36)
         .slice(2, 8)}`;
 
 
-    // --------------------------------------
-    // GET SECURE TOKEN FROM OUR SERVER
-    // --------------------------------------
-
-    const tokenResponse = await fetch(
-      "/api/livekit-token",
-      {
-        method: "POST",
-
-        headers: {
-          "Content-Type": "application/json"
-        },
-
-        body: JSON.stringify({
-          roomName,
-          identity
-        })
-      }
+    // Save demo creator name
+    localStorage.setItem(
+      "livestream_creator",
+      "You"
     );
+
+
+    // --------------------------------------
+    // GET HOST TOKEN
+    // --------------------------------------
+
+    const tokenResponse =
+      await fetch(
+        "/api/livekit-token",
+        {
+
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+
+          body: JSON.stringify({
+
+            roomName:
+              currentRoomName,
+
+            identity:
+              currentCreatorIdentity,
+
+            role:
+              "host"
+
+          })
+
+        }
+      );
 
 
     const tokenData =
@@ -297,15 +535,18 @@ async function startLiveStream() {
         tokenData.error ||
         "LiveKit token generation failed"
       );
+
     }
 
 
     // --------------------------------------
-    // GET LIVEKIT URL
+    // LIVEKIT CONFIG
     // --------------------------------------
 
     const configResponse =
-      await fetch("/api/livekit-config");
+      await fetch(
+        "/api/livekit-config"
+      );
 
 
     const config =
@@ -317,21 +558,28 @@ async function startLiveStream() {
       throw new Error(
         "LIVEKIT_URL is not configured"
       );
+
     }
 
 
     // --------------------------------------
-    // CREATE LIVEKIT ROOM
+    // CREATE ROOM
     // --------------------------------------
 
     livekitRoom =
       new LiveKit.Room({
+
         adaptiveStream: true,
+
         dynacast: true
+
       });
 
 
-    // Connect
+    // --------------------------------------
+    // CONNECT
+    // --------------------------------------
+
     await livekitRoom.connect(
       config.url,
       tokenData.token
@@ -342,11 +590,12 @@ async function startLiveStream() {
 
       liveStatus.textContent =
         "Connected. Starting camera and microphone...";
+
     }
 
 
     // --------------------------------------
-    // ENABLE CAMERA
+    // CAMERA
     // --------------------------------------
 
     await livekitRoom.localParticipant
@@ -354,7 +603,7 @@ async function startLiveStream() {
 
 
     // --------------------------------------
-    // ENABLE MICROPHONE
+    // MICROPHONE
     // --------------------------------------
 
     await livekitRoom.localParticipant
@@ -362,7 +611,7 @@ async function startLiveStream() {
 
 
     // --------------------------------------
-    // SHOW LOCAL CAMERA
+    // SHOW LOCAL VIDEO
     // --------------------------------------
 
     for (
@@ -376,6 +625,7 @@ async function startLiveStream() {
         const mediaTrack =
           publication.track.mediaStreamTrack;
 
+
         if (localVideo) {
 
           localVideo.srcObject =
@@ -384,17 +634,35 @@ async function startLiveStream() {
             ]);
 
           await localVideo.play();
+
         }
 
         break;
+
       }
+
     }
+
+
+    // --------------------------------------
+    // ANNOUNCE PUBLIC LIVE
+    // --------------------------------------
+
+    await announceLive();
+
+
+    // --------------------------------------
+    // START HEARTBEAT
+    // --------------------------------------
+
+    startHeartbeat();
 
 
     if (liveStatus) {
 
       liveStatus.textContent =
-        "🔴 LIVE — You are connected to LiveKit";
+        "🔴 LIVE — Everyone can now watch you";
+
     }
 
 
@@ -403,8 +671,14 @@ async function startLiveStream() {
       startLive.textContent =
         "🔴 LIVE";
 
-      startLive.disabled = true;
+      startLive.disabled =
+        true;
+
     }
+
+
+    // Refresh live cards
+    loadLiveStreams();
 
 
   } catch (error) {
@@ -419,46 +693,100 @@ async function startLiveStream() {
 
       liveStatus.textContent =
         `Error: ${error.message}`;
+
     }
 
 
     if (startLive) {
-      startLive.disabled = false;
+
+      startLive.disabled =
+        false;
+
     }
+
   }
+
 }
 
 
-// ------------------------------------------
+// ==========================================
 // STOP LIVE
-// ------------------------------------------
+// ==========================================
 
 async function stopLiveStream() {
 
   try {
 
+    stopHeartbeat();
+
+
+    // --------------------------------------
+    // REMOVE PUBLIC LISTING
+    // --------------------------------------
+
+    if (currentRoomName) {
+
+      await fetch(
+        `/api/live/${encodeURIComponent(currentRoomName)}`,
+        {
+          method: "DELETE"
+        }
+      );
+
+    }
+
+
+    // --------------------------------------
+    // DISCONNECT LIVEKIT
+    // --------------------------------------
+
     if (livekitRoom) {
 
-      await livekitRoom.localParticipant
-        .setCameraEnabled(false);
+      try {
 
-      await livekitRoom.localParticipant
-        .setMicrophoneEnabled(false);
+        await livekitRoom.localParticipant
+          .setCameraEnabled(false);
+
+        await livekitRoom.localParticipant
+          .setMicrophoneEnabled(false);
+
+      } catch (error) {
+
+        console.warn(
+          "Could not disable media:",
+          error
+        );
+
+      }
+
 
       livekitRoom.disconnect();
 
       livekitRoom = null;
+
     }
 
 
     if (localVideo) {
-      localVideo.srcObject = null;
+
+      localVideo.srcObject =
+        null;
+
     }
 
 
+    currentRoomName =
+      null;
+
+    currentCreatorIdentity =
+      null;
+
+
     if (liveStatus) {
+
       liveStatus.textContent =
         "Stream stopped";
+
     }
 
 
@@ -467,8 +795,14 @@ async function stopLiveStream() {
       startLive.textContent =
         "Start Live";
 
-      startLive.disabled = false;
+      startLive.disabled =
+        false;
+
     }
+
+
+    // Refresh live cards
+    loadLiveStreams();
 
 
   } catch (error) {
@@ -477,21 +811,713 @@ async function stopLiveStream() {
       "Stop live error:",
       error
     );
+
   }
+
 }
 
 
 if (startLive) {
+
   startLive.addEventListener(
     "click",
     startLiveStream
   );
+
 }
 
 
 if (stopLive) {
+
   stopLive.addEventListener(
     "click",
     stopLiveStream
   );
+
 }
+
+
+// ==========================================
+// PUBLIC LIVE STREAM LIST
+// ==========================================
+
+async function loadLiveStreams() {
+
+  try {
+
+    const response =
+      await fetch("/api/live");
+
+
+    if (!response.ok) {
+      return;
+    }
+
+
+    const data =
+      await response.json();
+
+
+    renderLiveStreams(
+      data.streams || []
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "Could not load live streams:",
+      error
+    );
+
+  }
+
+}
+
+
+// ==========================================
+// RENDER LIVE STREAMS
+// ==========================================
+
+function renderLiveStreams(streams) {
+
+  if (!liveGrid) {
+    return;
+  }
+
+
+  if (!streams.length) {
+
+    liveGrid.innerHTML =
+      liveStreams.map(
+        ([image, title, creator, watching]) =>
+          `<article class="stream-card">
+            <div class="stream-image">
+              <img src="${image}" alt="${title}">
+              <span class="small-live">● LIVE</span>
+              <span class="watching">◉ ${watching}</span>
+            </div>
+            <div class="stream-details">
+              <h3>${title}</h3>
+              <p>${creator}</p>
+            </div>
+          </article>`
+      ).join("");
+
+    return;
+  }
+
+
+  liveGrid.innerHTML =
+    streams.map((stream) => {
+
+      const safeTitle =
+        escapeHtml(stream.title);
+
+      const safeCreator =
+        escapeHtml(stream.creator);
+
+      const safeRoom =
+        encodeURIComponent(
+          stream.roomName
+        );
+
+
+      return `
+        <article
+          class="stream-card"
+          data-room="${safeRoom}"
+          style="cursor:pointer"
+        >
+
+          <div class="stream-image">
+
+            <div
+              style="
+                width:100%;
+                aspect-ratio:16/9;
+                background:linear-gradient(135deg,#111,#333);
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                font-size:48px;
+                color:white;
+              "
+            >
+              🔴
+            </div>
+
+            <span class="small-live">
+              ● LIVE
+            </span>
+
+            <span class="watching">
+              ◉ LIVE NOW
+            </span>
+
+          </div>
+
+          <div class="stream-details">
+
+            <h3>
+              ${safeTitle}
+            </h3>
+
+            <p>
+              ${safeCreator}
+            </p>
+
+          </div>
+
+        </article>
+      `;
+
+    }).join("");
+
+
+  document
+    .querySelectorAll(
+      "#liveGrid .stream-card[data-room]"
+    )
+    .forEach((card) => {
+
+      card.addEventListener(
+        "click",
+        () => {
+
+          const room =
+            decodeURIComponent(
+              card.dataset.room
+            );
+
+          const stream =
+            streams.find(
+              item =>
+                item.roomName === room
+            );
+
+          if (stream) {
+            openViewer(
+              stream
+            );
+          }
+
+        }
+      );
+
+    });
+
+}
+
+
+// ==========================================
+// HTML ESCAPE
+// ==========================================
+
+function escapeHtml(value) {
+
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
+}
+
+
+// ==========================================
+// VIEWER MODAL
+// ==========================================
+
+let viewerModal = null;
+let viewerRoom = null;
+
+
+function createViewerModal() {
+
+  if (viewerModal) {
+    return;
+  }
+
+
+  viewerModal =
+    document.createElement("div");
+
+
+  viewerModal.id =
+    "viewerModal";
+
+
+  viewerModal.className =
+    "modal-backdrop";
+
+
+  viewerModal.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+
+  viewerModal.innerHTML = `
+
+    <section
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      style="max-width:1000px"
+    >
+
+      <button
+        id="closeViewer"
+        class="close"
+        aria-label="Close"
+      >
+        ×
+      </button>
+
+      <p
+        class="eyebrow purple"
+      >
+        LIVE NOW
+      </p>
+
+      <h2 id="viewerTitle">
+        Live Stream
+      </h2>
+
+      <p
+        id="viewerCreator"
+        style="margin-bottom:16px"
+      ></p>
+
+      <div
+        id="viewerVideoContainer"
+        style="
+          position:relative;
+          width:100%;
+          background:#000;
+          border-radius:16px;
+          overflow:hidden;
+          min-height:400px;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+        "
+      >
+
+        <video
+          id="viewerVideo"
+          autoplay
+          playsinline
+          controls
+          style="
+            width:100%;
+            max-height:70vh;
+            object-fit:contain;
+            background:#000;
+          "
+        ></video>
+
+        <div
+          id="viewerStatus"
+          style="
+            position:absolute;
+            color:white;
+            text-align:center;
+            padding:20px;
+          "
+        >
+          Connecting...
+        </div>
+
+      </div>
+
+    </section>
+
+  `;
+
+
+  document.body.appendChild(
+    viewerModal
+  );
+
+
+  const closeButton =
+    document.querySelector(
+      "#closeViewer"
+    );
+
+
+  if (closeButton) {
+
+    closeButton.addEventListener(
+      "click",
+      closeViewer
+    );
+
+  }
+
+
+  viewerModal.addEventListener(
+    "click",
+    (event) => {
+
+      if (
+        event.target ===
+        viewerModal
+      ) {
+
+        closeViewer();
+
+      }
+
+    }
+  );
+
+}
+
+
+async function openViewer(stream) {
+
+  createViewerModal();
+
+
+  viewerModal.classList.add(
+    "open"
+  );
+
+
+  viewerModal.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+
+  const title =
+    document.querySelector(
+      "#viewerTitle"
+    );
+
+  const creator =
+    document.querySelector(
+      "#viewerCreator"
+    );
+
+  const status =
+    document.querySelector(
+      "#viewerStatus"
+    );
+
+
+  if (title) {
+
+    title.textContent =
+      stream.title;
+
+  }
+
+
+  if (creator) {
+
+    creator.textContent =
+      `Live by ${stream.creator}`;
+
+  }
+
+
+  if (status) {
+
+    status.textContent =
+      "Connecting to live stream...";
+
+  }
+
+
+  try {
+
+    const LiveKit =
+      await loadLiveKit();
+
+
+    // --------------------------------------
+    // VIEWER IDENTITY
+    // --------------------------------------
+
+    const identity =
+      `viewer-${Date.now()}-${Math.random()
+        .toString(36)
+        .slice(2, 8)}`;
+
+
+    // --------------------------------------
+    // GET VIEWER TOKEN
+    // --------------------------------------
+
+    const tokenResponse =
+      await fetch(
+        "/api/livekit-token",
+        {
+
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+
+          body: JSON.stringify({
+
+            roomName:
+              stream.roomName,
+
+            identity:
+              identity,
+
+            role:
+              "viewer"
+
+          })
+
+        }
+      );
+
+
+    const tokenData =
+      await tokenResponse.json();
+
+
+    if (!tokenResponse.ok) {
+
+      throw new Error(
+        tokenData.error ||
+        "Viewer token failed"
+      );
+
+    }
+
+
+    // --------------------------------------
+    // CONFIG
+    // --------------------------------------
+
+    const configResponse =
+      await fetch(
+        "/api/livekit-config"
+      );
+
+
+    const config =
+      await configResponse.json();
+
+
+    if (!config.url) {
+
+      throw new Error(
+        "LIVEKIT_URL is not configured"
+      );
+
+    }
+
+
+    // --------------------------------------
+    // CREATE VIEWER ROOM
+    // --------------------------------------
+
+    viewerRoom =
+      new LiveKit.Room({
+
+        adaptiveStream: true,
+
+        dynacast: true
+
+      });
+
+
+    // --------------------------------------
+    // RECEIVE TRACKS
+    // --------------------------------------
+
+    viewerRoom.on(
+      LiveKit.RoomEvent.TrackSubscribed,
+      (
+        track,
+        publication,
+        participant
+      ) => {
+
+        if (
+          track.kind ===
+          LiveKit.Track.Kind.Video
+        ) {
+
+          const video =
+            document.querySelector(
+              "#viewerVideo"
+            );
+
+
+          if (video) {
+
+            const element =
+              track.attach();
+
+            element.autoplay =
+              true;
+
+            element.playsInline =
+              true;
+
+            element.controls =
+              true;
+
+            element.style.width =
+              "100%";
+
+            element.style.maxHeight =
+              "70vh";
+
+            element.style.objectFit =
+              "contain";
+
+            element.style.background =
+              "#000";
+
+
+            const oldVideo =
+              document.querySelector(
+                "#viewerVideo"
+              );
+
+
+            if (oldVideo) {
+
+              oldVideo.replaceWith(
+                element
+              );
+
+            }
+
+          }
+
+
+          if (status) {
+
+            status.textContent =
+              "🔴 LIVE";
+
+          }
+
+        }
+
+
+        if (
+          track.kind ===
+          LiveKit.Track.Kind.Audio
+        ) {
+
+          const element =
+            track.attach();
+
+          element.autoplay =
+            true;
+
+          element.style.display =
+            "none";
+
+          document.body.appendChild(
+            element
+          );
+
+        }
+
+      }
+    );
+
+
+    // --------------------------------------
+    // CONNECT
+    // --------------------------------------
+
+    await viewerRoom.connect(
+      config.url,
+      tokenData.token
+    );
+
+
+    if (status) {
+
+      status.textContent =
+        "🔴 LIVE";
+
+    }
+
+
+  } catch (error) {
+
+    console.error(
+      "Viewer error:",
+      error
+    );
+
+
+    if (status) {
+
+      status.textContent =
+        `Unable to watch: ${error.message}`;
+
+    }
+
+  }
+
+}
+
+
+// ==========================================
+// CLOSE VIEWER
+// ==========================================
+
+function closeViewer() {
+
+  if (viewerRoom) {
+
+    try {
+      viewerRoom.disconnect();
+    } catch (error) {
+      console.error(error);
+    }
+
+    viewerRoom = null;
+
+  }
+
+
+  if (viewerModal) {
+
+    viewerModal.classList.remove(
+      "open"
+    );
+
+    viewerModal.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+  }
+
+}
+
+
+// ==========================================
+// INITIAL LIVE LOAD
+// ==========================================
+
+loadLiveStreams();
+
+
+// Refresh live list every 10 seconds
+
+setInterval(
+  loadLiveStreams,
+  10000
+);
