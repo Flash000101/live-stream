@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0a0a0d" />
+    <title>LiveStream — Watch. Create. Go Live.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+    <header class="topbar">
+      <a href="#home" class="brand" aria-label="LiveStream home"><span class="brand-mark">▶</span>LIVE<span>STREAM</span></a>
+      <nav><a class="active" href="#home">Discover</a><a href="#shorts">Shorts</a><a href="#live">Live now</a><a href="#creators">Creators</a></nav>
+      <div class="top-actions"><button class="icon-button" aria-label="Search">⌕</button><button class="upload-button" id="openUpload">＋ Upload</button><button class="avatar" aria-label="Open profile">A</button></div>
+    </header>
+
+    <main id="home">
+      <section class="hero">
+        <div class="hero-copy"><p class="eyebrow"><span class="live-dot"></span> 24 creators streaming now</p><h1>Every moment.<br /><em>Live.</em> Unfiltered.</h1><p class="hero-text">Watch standout creators, discover fresh stories, and share your world with a community that is always tuned in.</p><div class="hero-actions"><a class="primary-button" href="#live">Watch live <span>↗</span></a><button class="secondary-button" id="heroUpload">Start creating</button></div><div class="hero-stats"><div><strong>18K+</strong><span>Active viewers</span></div><div><strong>2.4K</strong><span>New videos today</span></div><div><strong>98%</strong><span>Creator love</span></div></div></div>
+        <div class="hero-card"><img src="https://images.unsplash.com/photo-1531058020387-3be344556be6?auto=format&fit=crop&w=1100&q=85" alt="Singer performing on stage" /><div class="hero-gradient"></div><div class="live-badge"><span></span> LIVE</div><button class="hero-play" aria-label="Play featured stream">▶</button><div class="hero-info"><p>FEATURED LIVE</p><h2>Midnight Sessions</h2><span>with Maya Stone · 12.8K watching</span></div></div>
+      </section>
+
+      <section class="content-section" id="live"><div class="section-heading"><div><p class="eyebrow"><span class="live-dot"></span> HAPPENING NOW</p><h2>Live right now</h2></div><a href="#live" class="view-all">View all <span>→</span></a></div><div class="live-grid" id="liveGrid"></div></section>
+
+      <section class="content-section" id="shorts"><div class="section-heading"><div><p class="eyebrow purple">TRENDING FAST</p><h2>Shorts you’ll love</h2></div><a href="#shorts" class="view-all">View all <span>→</span></a></div><div class="shorts-row" id="shortsRow"></div></section>
+
+      <section class="content-section long-videos"><div class="section-heading"><div><p class="eyebrow blue">JUST DROPPED</p><h2>Long-form stories</h2></div><a href="#videos" class="view-all">View all <span>→</span></a></div><div class="video-grid" id="videoGrid"></div></section>
+
+      <section class="creator-banner" id="creators"><div><p class="eyebrow purple">FOR CREATORS</p><h2>Your audience is<br />waiting for <em>you.</em></h2><p>Upload videos, go live, and build a community around your work.</p><button class="primary-button" id="bannerUpload">Create your channel <span>↗</span></button></div><div class="creator-orbs"><div class="orb orb-a">✦</div><div class="orb orb-b">●</div><div class="orb orb-c">◐</div></div></section>
+    </main>
+
+    <div class="modal-backdrop" id="uploadModal" aria-hidden="true"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="uploadTitle"><button class="close" id="closeUpload" aria-label="Close">×</button><p class="eyebrow purple">CREATOR STUDIO</p><h2 id="uploadTitle">Share something great</h2><form id="uploadForm"><label class="drop-zone" for="videoFile"><input id="videoFile" type="file" accept="video/*" /><span class="upload-icon">↑</span><strong>Choose a video to upload</strong><small>MP4, MOV or WebM · up to 2 GB</small></label><label>Video title<input id="videoTitle" required maxlength="70" placeholder="Give your video a title" /></label><div class="type-choice"><label><input type="radio" name="type" value="long" checked /><span>▭ Long video</span></label><label><input type="radio" name="type" value="short" /><span>▯ Short video</span></label></div><button class="primary-button form-submit" type="submit">Publish video <span>↗</span></button><p class="form-note" id="uploadNote">Demo mode: uploaded videos stay in this browser until storage is connected.</p></form></section></div>
+
+    <div class="chat-widget" id="chatWidget"><button class="chat-toggle" id="chatToggle">💬 <span>Live chat</span></button><section class="chat-panel"><div class="chat-header"><div><strong>Midnight Sessions</strong><small><span class="live-dot"></span> 12.8K watching</small></div><button id="chatClose" aria-label="Close chat">×</button></div><div class="messages" id="messages"><p><b>@rina</b> This set is beautiful ✨</p><p><b>@leo</b> Greetings from Mumbai!</p><p><b>@nova</b> The energy tonight 🔥</p></div><form id="chatForm"><input id="chatInput" maxlength="140" placeholder="Say something nice..." /><button aria-label="Send message">↑</button></form></section></div>
+    <footer>© 2026 LiveStream <span>•</span> Built for creators, by creators.</footer>
+    <script src="app.js"></script>
+  </body>
+</html>
