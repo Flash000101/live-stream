@@ -1,21 +1,21 @@
-const liveStreams = [
+﻿const liveStreams = [
   ["https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?auto=format&fit=crop&w=700&q=80", "Late Night Beats", "DJ Vanya", "8.2K watching"],
   ["https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=700&q=80", "The Creative Room", "Ava Sullivan", "2.1K watching"],
   ["https://images.unsplash.com/photo-1526948128573-703ee1aeb6fa?auto=format&fit=crop&w=700&q=80", "Studio After Hours", "Jordan Miles", "5.6K watching"]
 ];
 
 const shorts = [
-  ["https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=500&q=80", "Get ready with me", "Maya · 1.2M views"],
-  ["https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=500&q=80", "Golden hour", "Zoe · 848K views"],
-  ["https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=500&q=80", "Sunday energy", "Kia · 582K views"],
-  ["https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=500&q=80", "A new look", "Lena · 410K views"],
-  ["https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=500&q=80", "City diary", "Aria · 326K views"]
+  ["https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=500&q=80", "Get ready with me", "Maya Â· 1.2M views"],
+  ["https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=500&q=80", "Golden hour", "Zoe Â· 848K views"],
+  ["https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=500&q=80", "Sunday energy", "Kia Â· 582K views"],
+  ["https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=500&q=80", "A new look", "Lena Â· 410K views"],
+  ["https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=500&q=80", "City diary", "Aria Â· 326K views"]
 ];
 
 const videos = [
-  ["https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=700&q=80", "Behind the festival: our story", "Skyline Studio · 48K views", "18:42"],
-  ["https://images.unsplash.com/photo-1526481280695-3c687fd643ed?auto=format&fit=crop&w=700&q=80", "Traveling light through Tokyo", "Noah Reed · 82K views", "12:07"],
-  ["https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=700&q=80", "Making an album from scratch", "Mila Rae · 28K views", "24:16"]
+  ["https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=700&q=80", "Behind the festival: our story", "Skyline Studio Â· 48K views", "18:42"],
+  ["https://images.unsplash.com/photo-1526481280695-3c687fd643ed?auto=format&fit=crop&w=700&q=80", "Traveling light through Tokyo", "Noah Reed Â· 82K views", "12:07"],
+  ["https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=700&q=80", "Making an album from scratch", "Mila Rae Â· 28K views", "24:16"]
 ];
 
 
@@ -31,8 +31,8 @@ if (liveGrid) {
       `<article class="stream-card">
         <div class="stream-image">
           <img src="${image}" alt="${title}">
-          <span class="small-live">● LIVE</span>
-          <span class="watching">◉ ${watching}</span>
+          <span class="small-live">â— LIVE</span>
+          <span class="watching">â—‰ ${watching}</span>
         </div>
         <div class="stream-details">
           <h3>${title}</h3>
@@ -142,7 +142,7 @@ if (uploadForm) {
 
     if (uploadNote) {
       uploadNote.textContent =
-        `“${title}” is ready in demo mode. Cloud video storage will be connected next.`;
+        `â€œ${title}â€ is ready in demo mode. Cloud video storage will be connected next.`;
     }
 
     event.currentTarget.reset();
@@ -661,7 +661,7 @@ async function startLiveStream() {
     if (liveStatus) {
 
       liveStatus.textContent =
-        "🔴 LIVE — Everyone can now watch you";
+        "ðŸ”´ LIVE â€” Everyone can now watch you";
 
     }
 
@@ -669,7 +669,7 @@ async function startLiveStream() {
     if (startLive) {
 
       startLive.textContent =
-        "🔴 LIVE";
+        "ðŸ”´ LIVE";
 
       startLive.disabled =
         true;
@@ -894,8 +894,8 @@ function renderLiveStreams(streams) {
           `<article class="stream-card">
             <div class="stream-image">
               <img src="${image}" alt="${title}">
-              <span class="small-live">● LIVE</span>
-              <span class="watching">◉ ${watching}</span>
+              <span class="small-live">â— LIVE</span>
+              <span class="watching">â—‰ ${watching}</span>
             </div>
             <div class="stream-details">
               <h3>${title}</h3>
@@ -944,15 +944,15 @@ function renderLiveStreams(streams) {
                 color:white;
               "
             >
-              🔴
+              ðŸ”´
             </div>
 
             <span class="small-live">
-              ● LIVE
+              â— LIVE
             </span>
 
             <span class="watching">
-              ◉ LIVE NOW
+              â—‰ LIVE NOW
             </span>
 
           </div>
@@ -1073,7 +1073,7 @@ function createViewerModal() {
         class="close"
         aria-label="Close"
       >
-        ×
+        Ã—
       </button>
 
       <p
@@ -1404,7 +1404,7 @@ async function openViewer(stream) {
           if (status) {
 
             status.textContent =
-              "🔴 LIVE";
+              "ðŸ”´ LIVE";
 
           }
 
@@ -1448,7 +1448,7 @@ async function openViewer(stream) {
     if (status) {
 
       status.textContent =
-        "🔴 LIVE";
+        "ðŸ”´ LIVE";
 
     }
 
@@ -1525,23 +1525,3 @@ setInterval(
 // PROFILE AVATAR
 // ==========================================
 
-(function () {
-  const profile = JSON.parse(localStorage.getItem("dirtyHubProfile") || "null");
-  const avatar = document.querySelector(".avatar");
-
-  if (!profile || !avatar) return;
-
-  if (profile.photo) {
-    avatar.innerHTML = "";
-    const img = document.createElement("img");
-    img.src = profile.photo;
-    img.alt = "Profile";
-    img.style.width = "100%";
-    img.style.height = "100%";
-    img.style.objectFit = "cover";
-    img.style.borderRadius = "50%";
-    avatar.appendChild(img);
-  } else if (profile.name) {
-    avatar.textContent = profile.name.charAt(0).toUpperCase();
-  }
-})();
