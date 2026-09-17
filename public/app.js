@@ -1521,3 +1521,27 @@ setInterval(
   loadLiveStreams,
   10000
 );
+// ==========================================
+// PROFILE AVATAR
+// ==========================================
+
+(function () {
+  const profile = JSON.parse(localStorage.getItem("dirtyHubProfile") || "null");
+  const avatar = document.querySelector(".avatar");
+
+  if (!profile || !avatar) return;
+
+  if (profile.photo) {
+    avatar.innerHTML = "";
+    const img = document.createElement("img");
+    img.src = profile.photo;
+    img.alt = "Profile";
+    img.style.width = "100%";
+    img.style.height = "100%";
+    img.style.objectFit = "cover";
+    img.style.borderRadius = "50%";
+    avatar.appendChild(img);
+  } else if (profile.name) {
+    avatar.textContent = profile.name.charAt(0).toUpperCase();
+  }
+})();
